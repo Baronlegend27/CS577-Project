@@ -7,7 +7,7 @@ class MLPModel(torch.nn.Module):
         super(MLPModel, self).__init__()
         self.user_count = user_count
         self.item_count = item_count
-        self.latent_dim_len_len = latent_dim_len
+        self.latent_dim_len = latent_dim_len
         self.hidden_layer = hidden
         self.user_embedding = nn.Embedding(num_embeddings=self.user_count, embedding_dim=self.latent_dim_len)
         self.item_embedding = nn.Embedding(num_embeddings=self.item_count, embedding_dim=self.latent_dim_len)
