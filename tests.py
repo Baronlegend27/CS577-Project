@@ -1,79 +1,67 @@
-from animedata import AnimeData
-import pandas as pd
-from mlp import MLPModel
-from gmf import GMFModel
-from torch import nn
 import torch
-
-df1 = pd.read_csv('data/anime.csv')
-df2 = pd.read_csv('data/rating.csv')
-df2 = df2[:25000]
-
-df1.dropna(inplace=True)
-df2.dropna(inplace=True)
-df2 = df2.loc[df2.iloc[:, 2] != -1]
-
-df1 = df1[df1['episodes'] != 'Unknown']
-
-handler = AnimeData(df2, df1)
-
-user_count = len(handler.ratings['user_id'].unique())  # Number of unique users
-item_count = len(handler.anime['anime_id'].unique())  # Number of unique anime
-genre_count = 43  # Number of one-hot encoded genre categories
-latent_dim_len = 50  # Latent dimension length for embeddings
-hidden_layers = [64, 16, 4]  # Example hidden layers for MLP
-
-# Initialize the MLP model
-model = MLPModel(user_count=user_count,
-                 item_count=item_count,
-                 genre_count=genre_count,
-                 latent_dim_len=latent_dim_len,
-                 hidden=hidden_layers)
-a, b = handler.get_loaders()
-
-loss_function = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+from torch import nn
 
 
-for i in range(10):
-    model.train()
-    total_loss = 0
-    for user, anime, type, name, episodes, genre, labels in a:
+class MLPModel(torch.nn.Module):
+    def __init__(self, user_count, item_count, genre_count, latent_dim_len, hidden):
+        super(MLPModel, self).__init__()
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.user_count = user_count
+        self.item_count = item_count
+        self.genre_count = genre_count  # Number of one-hot encoded genres
+        self.latent_dim_len = latent_dim_len
+        self.hidden_layer = hidden
 
-        # Forward pass
-        optimizer.zero_grad()  # Clear previous gradients
-        predictions = model(user, anime, episodes, name, type, genre)
+        # Embedding layers for user and anime
+        self.user_embedding = nn.Embedding(num_embeddings=self.user_count, embedding_dim=self.latent_dim_len)
+        self.item_embedding = nn.Embedding(num_embeddings=self.item_count, embedding_dim=self.latent_dim_len)
+        self.user_embedding.to(device)
+        self.item_embedding.to(device)
 
-        # Calculate loss
-        loss = loss_function(predictions, labels)
+        # Define the layers of the MLP
+        self.layers = nn.ModuleList()
 
-        # Backward pass and optimize
-        loss.backward()
-        optimizer.step()
+        # Combine user, item, and non-embedding features
+        input_dim = self.latent_dim_len * 2 + 3 + self.genre_count
 
-        total_loss += loss.item()
-    print(f"Epoch [{i + 1}/{10}], Loss: {total_loss / len(a)}")
-torch.save(model.state_dict(), f'models/anime.pth')
-model.eval()  # Set the model to evaluation mode
-total_loss = 0
-total_samples = 0
+        # Hidden layers with ReLU activation
+        for dim in self.hidden_layer:
+            self.layers.append(nn.Linear(in_features=input_dim, out_features=dim))
+            self.layers.append(nn.ReLU())
+            input_dim = dim
 
-# Loop through the test set
-with torch.no_grad():  # Disable gradient calculation
-    for user, anime, type, name, episodes, genre, labels in b:
-        # Move data to the same device as the model (e.g., GPU)
-        user, item = user.to("cpu"), item.to("cpu")
-        episodes, name, type, genre = episodes.to("cpu"), name.to("cpu"), type.to("cpu"), genre.to("cpu")
-        targets = targets.to("cpu")
+        # Output layer
+        self.output_layer = nn.Sequential(
+            nn.Linear(in_features=self.hidden_layer[-1], out_features=1),
+            nn.ReLU())  # ReLU for output layer can be replaced by sigmoid or identity depending on task
 
-        # Get model predictions
-        predictions = model(user, item, episodes, name, type, genre)
+        # Initialize weights
+        self.apply(self.init_weights)
 
-        # Calculate the loss (e.g., MSE loss)
-        loss = loss_function(predictions, labels)
-        total_loss += loss.item() * len(targets)  # Accumulate loss
-        total_samples += len(targets)  # Accumulate the number of samples
+    def forward(self, user_entries, item_entries, episodes, name, type, genre):
+        # Get user and item embeddings
+        user_e = self.user_embedding(user_entries)
+        item_e = self.item_embedding(item_entries)
 
-# Calculate average loss
-avg_loss = total_loss / total_samples
-print(f"Test Loss: {avg_loss:.4f}")
+        episodes = episodes.unsqueeze(1)  # (batch_size, 1)
+        name = name.unsqueeze(1)  # (batch_size, 1)
+        type = type.unsqueeze(1)  # (batch_size, 1)
+        # Concatenate all features into one vector
+        model_input = torch.cat([user_e, item_e, episodes, name, type, genre], dim=-1)
+
+        # Pass input through hidden layers
+        for hidden_layer in self.layers:
+            model_input = hidden_layer(model_input)
+
+        # Compute final output score (prediction)
+        score = self.output_layer(model_input)
+        return score.squeeze()
+
+    def init_weights(self, m):
+        if isinstance(m, nn.Linear):
+            nn.init.xavier_normal_(m.weight)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias)
+
+        if isinstance(m, nn.Embedding):
+            nn.init.normal_(m.weight, mean=0.0, std=0.01)
