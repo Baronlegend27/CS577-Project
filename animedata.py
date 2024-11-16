@@ -27,7 +27,10 @@ class AnimeData(object):
 
         # Encode the name and type
         self.anime['name'] = encoder.fit_transform(self.anime['name'])
+        self.name_map = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
+        
         self.anime['type'] = encoder.fit_transform(self.anime['type'])
+        self.type_map = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
 
         # One hot encode the genres
         self.anime['genre'] = self.anime['genre'].str.split(', ')
@@ -42,11 +45,34 @@ class AnimeData(object):
 
         # Merge user and anime data into single dataset
         self.data = self.ratings.merge(self.anime, on='anime_id', how='left')
+        self.data['rating'] = self.data['rating'] / 10
 
         self.data['episodes'] = self.data['episodes'].astype('int64')
 
         self.features = self.data[['user_id', 'anime_id', 'type', 'name', 'episodes']+ list(self.genre.columns)]
         self.target = self.data['rating']
+
+        self.genre_cols = self.features.columns[5:]
+
+    def process(self, item):
+        # Encode the type and name
+        tid = self.type_map[item[2]]  # "TV" -> Encoded type using your `type_map`
+        name = self.name_map[item[3]]  # Anime name -> Encoded name using your `name_map`
+        
+        # One-hot encode the genres
+        genre_encoded = [1 if genre in item[5].split(", ") else 0 for genre in self.genre_cols]
+        
+        # Combine all the features into a single list
+        dfn = [item[0],  # anime_id
+               item[1],  # user_id
+               tid,      # Encoded type
+               name,     # Encoded name
+               item[4]]  # episodes
+        dfn += genre_encoded  # Append the genre encoding
+        
+        # Return as a Pandas Series (1D array)
+        cols = ['user_id', 'anime_id', 'type', 'name', 'episodes'] + list(self.genre.columns)
+        return pd.Series(dfn, index=cols)
 
     def __len__(self):
         return len(self.features)
