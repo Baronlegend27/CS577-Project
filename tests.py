@@ -6,9 +6,9 @@ from torch import nn
 import torch
 
 df1 = pd.read_csv('data/anime.csv')
-df1 = df1[:25000]
+df1 = df1
 df2 = pd.read_csv('data/rating.csv')
-
+df2 = df2[:25000]
 df1.dropna(inplace=True)
 df2.dropna(inplace=True)
 df2 = df2.loc[df2.iloc[:, 2] != -1]
