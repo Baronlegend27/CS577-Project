@@ -45,7 +45,7 @@ class AnimeData(object):
 
         self.data['episodes'] = self.data['episodes'].astype('int64')
 
-        self.features = self.data[['user_id', 'anime_id', 'type', 'name', 'episodes'] + list(self.genre.columns)]
+        self.features = self.data[['user_id', 'anime_id', 'type', 'name', 'episodes']+ list(self.genre.columns)]
         self.target = self.data['rating']
 
     def __len__(self):
@@ -59,7 +59,7 @@ class AnimeData(object):
         return x, y
 
     def get_loaders(self):
-        train, test = train_test_split(self.data, test_size=0.95)
+        train, test = train_test_split(self.data, test_size=0.2)
 
         train_user_item = torch.tensor(train[self.features.columns].values, dtype=torch.long)
         train_labels = torch.tensor(train['rating'].values, dtype=torch.float32)
@@ -82,22 +82,8 @@ class AnimeData(object):
                                   test_user_item[:, 5:], # genres
                                   test_labels)
 
-        train = DataLoader(train_set, batch_size=64, shuffle=True)
-        test = DataLoader(test_set, batch_size=64, shuffle=True)
-
-        """
-        train_user_item = torch.tensor(train[['UID', 'Game']].values, dtype=torch.long)
-        train_labels = torch.tensor(train['Playtime'].values, dtype=torch.float32)
-
-        test_user_item = torch.tensor(test[['UID', 'Game']].values, dtype=torch.long)
-        test_labels = torch.tensor(test['Playtime'].values, dtype=torch.float32)
-
-        train_dataset = TensorDataset(train_user_item[:, 0], train_user_item[:, 1], train_labels)
-        test_dataset = TensorDataset(test_user_item[:, 0], test_user_item[:, 1], test_labels)
-
-        train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-        test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
-        """
+        train = DataLoader(train_set, batch_size=128, shuffle=True)
+        test = DataLoader(test_set, batch_size=128, shuffle=True)
 
         return train, test
 
