@@ -5,6 +5,7 @@ from torch import nn
 class MLPModel(torch.nn.Module):
     def __init__(self, user_count, item_count, genre_count, latent_dim_len, hidden):
         super(MLPModel, self).__init__()
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.user_count = user_count
         self.item_count = item_count
         self.genre_count = genre_count  # Number of one-hot encoded genres
@@ -14,12 +15,14 @@ class MLPModel(torch.nn.Module):
         # Embedding layers for user and anime
         self.user_embedding = nn.Embedding(num_embeddings=self.user_count, embedding_dim=self.latent_dim_len)
         self.item_embedding = nn.Embedding(num_embeddings=self.item_count, embedding_dim=self.latent_dim_len)
+        self.user_embedding.to(device)
+        self.item_embedding.to(device)
 
         # Define the layers of the MLP
         self.layers = nn.ModuleList()
 
         # Combine user, item, and non-embedding features
-        input_dim = self.latent_dim_len * 2 + self.genre_count +3
+        input_dim = self.latent_dim_len * 2 + 3 + self.genre_count
 
         # Hidden layers with ReLU activation
         for dim in self.hidden_layer:
