@@ -7,8 +7,11 @@ mdFile = "proj.md"
 htmlFile = "proj.html"
 pdfFile = "proj.pdf"
 
+cssFile = "--css=proj.css"
+title = "--metadata title='proj'"
+
 # Build the command as a list of arguments
-cmd1 = [pandocPath, mdFile, "-o", htmlFile]
+cmd1 = [pandocPath, mdFile, "-o", htmlFile, cssFile, title]
 cmd2 = [wkhtmltopdfPath, htmlFile, pdfFile]
 
 # Run the command
