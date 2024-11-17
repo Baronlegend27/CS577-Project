@@ -6,151 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>proj</title>
   <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      background-color: #1a1a1a;
-      border: none;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -165,12 +20,14 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  
+  <link rel="stylesheet" href="proj.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
-<hr style="border: none; border-top: 10px solid black;">
+<hr style="border: none; border-top: 5px solid black;">
 <h1 style="text-align: center;">
 Neural Collaberative Filtering
 </h1>
@@ -180,15 +37,9 @@ Neural Collaberative Filtering
 <strong style="font-size: 12pt;">Anonymous Author(s)</strong>
 </center>
 <p style="text-align: center; font-size: 10pt; line-height: 11pt;">
-Affiliation
+Affiliation <br> Address <br> email
 </p>
-<p style="text-align: center; font-size: 10pt; line-height: 11pt;">
-Address
-</p>
-<p style="text-align: center; font-size: 10pt; line-height: 11pt;">
-email
-</p>
-<br> <br>
+<br>
 <center>
 <strong style="font-size: 12pt;">Abstract</strong>
 </center>
@@ -199,38 +50,104 @@ also in 10-point type, as specified. blalablabc labalbalablaba
 lbalabalba lablabalbalabalablaba lbalbalabl abalbal abalbalablabalbalabl
 abalbalablabalab
 </p>
-<br> <br> <strong style="font-size: 12pt;">Background</strong> <br> <br>
+<br> <strong style="font-size: 12pt;">Background</strong> <br> <br>
+<p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
+Collaborative filtering is a method used in recommendation systems to
+suggest items to users based on the preferences and behaviors of other
+users. Basically assuming that if User <span
+class="math inline">\(A\)</span> liked something and User <span
+class="math inline">\(B\)</span> has similar taste to User <span
+class="math inline">\(A\)</span> then User <span
+class="math inline">\(B\)</span> will also like something User <span
+class="math inline">\(A\)</span> liked.
+</p>
+<p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
+Matrix factorization models are used to discover latent features that
+explain the patterns in user-item interactions. We basically have a
+matrix R where rows (m) represent the users and the columns (n)
+represent the items. We then want to factorize R into two smaller
+matrices (P) an <span class="math inline">\(m * k\)</span> where each
+row represents a user and the column represents a latent feature. For
+the item matrix <span class="math inline">\(Q n * k\)</span> where each
+row represents an item and each column represents a latent feature of
+the item. Then the factorization attempts to approximate the matrix R
+from <span class="math inline">\(P * Q^T\)</span>. The latent factors or
+hidden features are the things which get learned that explain the
+observed interaction between users and items.
+</p>
+<p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
+Once the latent features are learned the dot product is used to predict
+(rank) the rating of between the users and items. WHere the interaction
+between a user and an item can be estimated by measuring how well the
+latent feature vectors for that user and that item match or align with
+each other (the dot product). When there is a high dot product it means
+that the latent features for a user and an item align well, while a low
+dot product means that the vectors do not align.
+</p>
+<p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
+However using the dot product does have some drawbacks. The dot product
+assumes that the user-item interactions are linearly dependent on the
+latent features. If two items are similar, the dot product assumes that
+the user’s preference for both items is simply the sum of their
+preferences for the individual latent features. The dot product assumes
+that user preferences can be captured by a single, linear combination of
+item attributes (represented by the item’s latent feature vector).
+</p>
+<br> <strong style="font-size: 12pt;">Model Architecture</strong> <br>
+<br>
 <p style="font-size: 10pt; line-height: 11pt;">
 Your abstract text goes here. This paragraph will be indented 1/2 inch
 on both sides, with a vertical spacing of 11 points (leading). It is
 also in 10-point type, as specified.
 </p>
-<br> <br> <strong style="font-size: 12pt;">Model Architecture</strong>
-<br> <br>
-<p style="font-size: 10pt; line-height: 11pt;">
-Your abstract text goes here. This paragraph will be indented 1/2 inch
-on both sides, with a vertical spacing of 11 points (leading). It is
-also in 10-point type, as specified.
-</p>
-<br> <br> <strong style="font-size: 12pt;">Minimal CPU-Ready Working
+<br> <strong style="font-size: 12pt;">Minimal CPU-Ready Working
 Example</strong> <br> <br>
 <p style="font-size: 10pt; line-height: 11pt;">
 Your abstract text goes here. This paragraph will be indented 1/2 inch
 on both sides, with a vertical spacing of 11 points (leading). It is
 also in 10-point type, as specified.
 </p>
-<br> <br> <strong style="font-size: 12pt;">Discussion</strong> <br> <br>
+<br> <strong style="font-size: 12pt;">Discussion</strong> <br> <br>
 <p style="font-size: 10pt; line-height: 11pt;">
 Your abstract text goes here. This paragraph will be indented 1/2 inch
 on both sides, with a vertical spacing of 11 points (leading). It is
 also in 10-point type, as specified.
 </p>
-<br> <br> <strong style="font-size: 12pt;">Contribution</strong> <br>
-<br>
+<br> <strong style="font-size: 12pt;">Contribution</strong> <br> <br>
 <p style="font-size: 10pt; line-height: 11pt;">
 Your abstract text goes here. This paragraph will be indented 1/2 inch
 on both sides, with a vertical spacing of 11 points (leading). It is
 also in 10-point type, as specified.
+</p>
+<br> <strong style="font-size: 12pt;">References</strong> <br> <br>
+<p style="font-size: 10pt; line-height: 11pt;">
+Any choice of citation style is acceptable as long as you are consistent
+It is permissible to reduce the font size to small (9 point) when
+listing the references.Note that the Reference section does not count
+towards the page limit.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+[1] Alexander, J.A. &amp; Mozer, M.C. (1995) Template-based algorithms
+for connectionist rule extraction. In G.Tesauro, D.S. Touretzky and T.K.
+Leen (eds.), <i>Advances in Neural Information Processing Systems
+7</i>,pp. 609–616. Cambridge, MA: MITPress.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+[2] Bower, J.M. &amp; Beeman, D. (1995) <i>The Book of GENESIS:
+Exploring Realistic Neural Models with the GEneral NEural SImulation
+System.</i> New York: TELOS/Springer–Verlag.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+[3] Hasselmo, M.E., Schnell, E. &amp; Barkai, E. (1995) Dynamics of
+learning and recall at excitatory recurrent synapses and cholinergic
+modulation in rat hippocampal region CA3. <i>Journal of Neuroscience</i>
+<strong>15</strong>(7):5249-5262.
+</p>
+<br> <strong style="font-size: 12pt;">Appendix</strong> <br> <br>
+<p style="font-size: 10pt; line-height: 11pt;">
+Optionally include supplemental material (complete proofs additional
+experiments and plots) in appendix. All such materials <strong>SHOULD be
+included in the main submission.<strong>
 </p>
 </body>
 </html>

@@ -8,11 +8,18 @@ htmlFile = "proj.html"
 pdfFile = "proj.pdf"
 
 cssFile = "--css=proj.css"
-title = "--metadata title='proj'"
+mathjax = "--mathjax"
 
 # Build the command as a list of arguments
-cmd1 = [pandocPath, mdFile, "-o", htmlFile, cssFile, title]
-cmd2 = [wkhtmltopdfPath, htmlFile, pdfFile]
+cmd1 = [pandocPath, mdFile, "-o", htmlFile, "-s", cssFile, mathjax]
+cmd2 = [
+    wkhtmltopdfPath, "--enable-local-file-access", 
+    "--margin-top", "1in", 
+    "--margin-right", "1in", 
+    "--margin-bottom", "0.5in", 
+    "--margin-left", "1in", 
+    "--page-size", "Letter", htmlFile, pdfFile
+]
 
 # Run the command
 subprocess.run(cmd1)
