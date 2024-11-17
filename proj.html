@@ -20,6 +20,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="proj.css" />
   <script
@@ -46,9 +110,7 @@ Affiliation <br> Address <br> email
 <p style="text-align: justify; margin-left: 3pc; margin-right: 3pc; font-size: 10pt; line-height: 11pt;">
 Your abstract text goes here. This paragraph will be indented 1/2 inch
 on both sides, with a vertical spacing of 11 points (leading). It is
-also in 10-point type, as specified. bla lablabc labal balab laba lbala
-balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb
-alabl aba lbala blabalab
+also in 10-point type, as specified.
 </p>
 <br> <strong style="font-size: 12pt;">Background</strong> <br> <br>
 <p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
@@ -97,25 +159,897 @@ preferences for the individual latent features. The dot product assumes
 that user preferences can be captured by a single, linear combination of
 item attributes (represented by the item’s latent feature vector).
 </p>
-<br> <strong style="font-size: 12pt;">Model Architecture</strong> <br>
-<br>
-<p style="font-size: 10pt; line-height: 11pt;">
-bla lablabc labal balab laba lbala balba labl abalbala balab laba lbalb
-alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc
-labal balab laba lbala balba labl abalbala balab laba lbalb alabl
-abalbal abalba lablabalb alabl aba lbala blabalab
+<center>
+<figure>
+<img src="Images/vector_latent_space.jpg" width="400">
+<figcaption style="font-size: 12px; line-height: 11pt text-align: center;">
+<br>Figure 1: Vector latent space
+</figcaption>
+</figure>
+</center>
+<p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
+Above shows MFs limitation with dot product. From data matrix <span
+class="math inline">\((a)\)</span>, <span
+class="math inline">\(u_4\)</span> is most similar to <span
+class="math inline">\(u_1\)</span>, followed by <span
+class="math inline">\(u_3\)</span>, and lastly <span
+class="math inline">\(u_2\)</span>. Which is the structure within the
+data meaning. However when we put this into the latent space, by using
+the dot product it will incorrect model the true ranking. As in the
+latent space (the arrows), placing <span
+class="math inline">\(p_4\)</span> closest to <span
+class="math inline">\(p_1\)</span> makes <span
+class="math inline">\(p_4\)</span> closer to <span
+class="math inline">\(p_2\)</span> than <span
+class="math inline">\(p_3\)</span>, which is incorrect.
 </p>
-<br> <strong style="font-size: 12pt;">Minimal CPU-Ready Working
-Example</strong> <br> <br>
+<br> <strong style="font-size: 12pt;"> Model Architecture<br> General
+model framework of neral collaborative filtering </strong> <br> <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-bla lablabc labal balab laba lbala balba labl abalbala balab laba lbalb
-alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc
-labal balab laba lbala balba labl abalbala balab laba lbalb alabl
-abalbal abalba lablabalb alabl aba lbala blabalabbla lablabc labal balab
-laba lbala balba labl abalbala balab laba lbalb alabl abalbal abalba
-lablabalb alabl aba lbala blabalab bla lablabc labal balab laba lbala
-balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb
-alabl aba lbala blabalab
+The <code>GMFModel</code> is an implementation of <strong>Generalized
+Matrix Factorization (GMF)</strong> within the <strong>Neural
+Collaborative Filtering (NCF)</strong> framework. <strong>Matrix
+Factorization (MF)</strong> is a classical technique in recommendation
+systems where user and item interactions are modeled by the <strong>dot
+product</strong> of their respective latent vectors. In GMF, the core
+operation is the <strong>element-wise product</strong> of the user and
+item embeddings, which generalizes the dot product used in MF. This
+interaction term is then combined with additional features such as
+<strong>episodes</strong>, <strong>type</strong>, and
+<strong>genre</strong>, and passed through a neural network for
+prediction.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+The model defines <strong>user</strong> and <strong>item
+embeddings</strong> using PyTorch’s <code>nn.Embedding</code>, where
+each user and item has a learned vector representation. These embeddings
+are multiplied element-wise to model the interaction between users and
+items. The resulting interaction vector is concatenated with other input
+features (episodes, type, genre) and fed through a fully connected layer
+followed by a <strong>sigmoid activation</strong> to predict a
+probability (e.g., whether a user will like an anime or not).
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+By using the <strong>sigmoid function</strong> in the output layer, GMF
+can be interpreted as a probabilistic model, suitable for tasks such as
+rating prediction or binary classification. If we were to use a
+<strong>linear activation</strong> and restrict the interaction term to
+a simple dot product, the model would recover the standard MF approach.
+GMF generalizes MF by allowing for <strong>non-linear
+interactions</strong> and by incorporating additional features, making
+it more expressive and flexible than traditional matrix factorization.
+</p>
+<center>
+<figure>
+<img src="Images/NEF_framework.jpg" width="400">
+<figcaption style="font-size: 12px; line-height: 11pt text-align: center;">
+<br>Figure 2: General overview of a model in this framework
+</figcaption>
+</figure>
+</center>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GMFModel(torch.nn.Module):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, uid_count, animeid_count, genre_count, latent_dim_len):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(GMFModel, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        device <span class="op">=</span> torch.device(<span class="st">&quot;cuda&quot;</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">&quot;cpu&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_count <span class="op">=</span> uid_count</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_count <span class="op">=</span> animeid_count</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.genre_count <span class="op">=</span> genre_count  </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.latent_dim_len <span class="op">=</span> latent_dim_len</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.uid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.animeid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding.to(device)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding.to(device)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout <span class="op">=</span> nn.Dropout(<span class="fl">0.3</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        input_dim <span class="op">=</span> <span class="va">self</span>.latent_dim_len <span class="op">+</span> <span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.genre_count</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Output layer</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.output_layer <span class="op">=</span> nn.Sequential(</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            nn.Linear(in_features<span class="op">=</span>input_dim, out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            nn.Sigmoid())</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Initialize weights</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">apply</span>(<span class="va">self</span>.init_weights)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, uid_index, animeid_index, episodes, <span class="bu">type</span>, genre):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get user and item embeddings</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        uid_e <span class="op">=</span> <span class="va">self</span>.uid_embedding(uid_index)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        animeid_e <span class="op">=</span> <span class="va">self</span>.animeid_embedding(animeid_index)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        product <span class="op">=</span> uid_e <span class="op">*</span> animeid_e </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        product <span class="op">=</span> <span class="va">self</span>.dropout(product)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        episodes <span class="op">=</span> episodes.unsqueeze(<span class="dv">1</span>)  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">type</span> <span class="op">=</span> <span class="bu">type</span>.unsqueeze(<span class="dv">1</span>)  </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        genre <span class="op">=</span> genre.squeeze(<span class="dv">1</span>)  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Concatenate all features into one vector</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>        model_input <span class="op">=</span> torch.cat([product, episodes, <span class="bu">type</span>, genre], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass input through the output layer</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        score <span class="op">=</span> <span class="va">self</span>.output_layer(model_input)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> score.squeeze()</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> init_weights(<span class="va">self</span>, m):</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Linear):</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            nn.init.xavier_normal_(m.weight)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> m.bias <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>                nn.init.zeros_(m.bias)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Embedding):</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>            nn.init.normal_(m.weight, mean<span class="op">=</span><span class="fl">0.0</span>, std<span class="op">=</span><span class="fl">0.01</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode p"><code class="sourceCode pascal"></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+This code implements a <strong>Multi-Layer Perceptron (MLP)</strong>
+model for a recommendation system, drawing inspiration from the
+<strong>Neural Collaborative Filtering (NCF)</strong> framework. In this
+setup, user and item features are represented by embeddings, which are
+concatenated with additional features (e.g., episodes, type, and genre)
+to form a combined input vector. This vector is passed through a series
+of hidden layers with <strong>ReLU</strong> activations, which learn the
+interactions between the user and item latent features. This approach
+contrasts with simpler methods like <strong>GMF</strong>, which only use
+element-wise products of latent vectors.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+The <strong>MLP</strong> model in the NCF framework emphasizes capturing
+<strong>non-linear interactions</strong> between user and item features,
+which is done by using a multi-layer architecture. The model employs a
+<strong>tower structure</strong>, where the layer size progressively
+decreases. Dropout layers are used for regularization to prevent
+overfitting.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+One key difference is the <strong>ReLU activation</strong> in the output
+layer, which constrains the model’s predictions to be non-negative. If
+your task involves predicting ratings (e.g., on a 1–5 scale), you may
+want to adjust this to a <strong>linear activation</strong> or a
+<strong>sigmoid/tanh</strong> function, depending on the range of values
+needed.
+</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MLPModel(torch.nn.Module):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, uid_count, animeid_count, genre_count, latent_dim_len, hidden):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MLPModel, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        device <span class="op">=</span> torch.device(<span class="st">&quot;cuda&quot;</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">&quot;cpu&quot;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_count <span class="op">=</span> uid_count</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_count <span class="op">=</span> animeid_count</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.genre_count <span class="op">=</span> genre_count  <span class="co"># Number of one-hot encoded genres</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.latent_dim_len <span class="op">=</span> latent_dim_len</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.hidden_layer <span class="op">=</span> hidden</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Embedding layers for user and anime</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.uid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.animeid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding.to(device)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding.to(device)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.layers <span class="op">=</span> nn.ModuleList()</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Combine user, item, and non-embedding features</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        input_dim <span class="op">=</span> <span class="va">self</span>.latent_dim_len <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.genre_count</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Hidden layers with ReLU activation, from paper</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dim <span class="kw">in</span> <span class="va">self</span>.hidden_layer:</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.Linear(in_features<span class="op">=</span>input_dim, out_features<span class="op">=</span>dim))</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.ReLU())</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.Dropout(<span class="fl">0.3</span>))</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            input_dim <span class="op">=</span> dim</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Output layer with ReLU activation</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.output_layer <span class="op">=</span> nn.Sequential(</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>            nn.Linear(in_features<span class="op">=</span><span class="va">self</span>.hidden_layer[<span class="op">-</span><span class="dv">1</span>], out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>            nn.ReLU())  </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">apply</span>(<span class="va">self</span>.init_weights)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, uid_index, animeid_index, episodes, <span class="bu">type</span>, genre):</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        uid_e <span class="op">=</span> <span class="va">self</span>.uid_embedding(uid_index)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        animeid_e <span class="op">=</span> <span class="va">self</span>.animeid_embedding(animeid_index)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        episodes <span class="op">=</span> episodes.unsqueeze(<span class="dv">1</span>) </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        <span class="bu">type</span> <span class="op">=</span> <span class="bu">type</span>.unsqueeze(<span class="dv">1</span>) </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        model_input <span class="op">=</span> torch.cat([uid_e, animeid_e, episodes, <span class="bu">type</span>, genre], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass input through hidden layers</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> hidden_layer <span class="kw">in</span> <span class="va">self</span>.layers:</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            model_input <span class="op">=</span> hidden_layer(model_input)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute final output score </span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        score <span class="op">=</span> <span class="va">self</span>.output_layer(model_input)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> score.squeeze()</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> init_weights(<span class="va">self</span>, m):</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Linear):</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>            nn.init.xavier_normal_(m.weight)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> m.bias <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>                nn.init.zeros_(m.bias)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Embedding):</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>            nn.init.normal_(m.weight, mean<span class="op">=</span><span class="fl">0.0</span>, std<span class="op">=</span><span class="fl">0.01</span>)</span></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+In this implementation of the <strong>Neural Matrix Factorization
+(NeuMF)</strong> model, the goal is to combine two types of
+models—<strong>Generalized Matrix Factorization (GMF)</strong> and
+<strong>Multi-Layer Perceptron (MLP)</strong>—to capture both linear and
+non-linear interactions between users and items, providing a more
+powerful recommendation system.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+The <strong>GMF</strong> component of the model applies a linear kernel
+to model the latent feature interactions between users and items.
+Specifically, it computes the dot product of user and item embeddings to
+capture linear relationships. In this part of the model, each user and
+item is represented by a latent vector, and their interaction is modeled
+as the element-wise multiplication of these vectors. This approach is
+simple but effective for modeling linear patterns in the data.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+On the other hand, the <strong>MLP</strong> component of the NeuMF model
+uses a deep neural network to learn non-linear interactions between the
+user and item embeddings. This part of the model is more flexible and
+capable of learning complex patterns that the GMF component might miss.
+The MLP uses multiple layers of fully connected neurons with activation
+functions (typically ReLU) and regularization (like dropout) to model
+non-linear relationships in the user-item interaction.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+Rather than forcing the GMF and MLP to share the same embeddings, which
+could limit the model’s ability to learn the best representations, the
+NeuMF model allows the GMF and MLP components to have separate
+embeddings. This flexibility helps the model learn more effective
+representations, especially in cases where the optimal latent dimension
+for the GMF and MLP components might differ. The outputs of these two
+models are then combined by concatenating their respective outputs and
+passing them through a final layer to produce the predicted interaction
+score. This fusion of the two models effectively leverages both the
+linear nature of GMF and the non-linear nature of MLP, giving the NeuMF
+model a powerful ability to capture complex user-item interactions.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+To improve the training of the NeuMF model and overcome the challenge of
+local optima in non-convex optimization problems, the model is
+pre-trained using separate GMF and MLP models. These models are trained
+independently on the dataset first, using random initialization and an
+optimization method such as Adam. After these models converge, their
+learned parameters (embeddings and weights) are transferred into the
+NeuMF model. This pre-training strategy provides a better starting point
+for the NeuMF model, allowing it to converge more quickly and perform
+better during fine-tuning. In particular, the embeddings for the GMF and
+MLP components are initialized with the pre-trained values, and the
+final fusion layer’s weights are adjusted to control the trade-off
+between the GMF and MLP outputs.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+Once the pre-training is complete, the NeuMF model is trained using
+<strong>stochastic gradient descent (SGD)</strong>, as opposed to Adam,
+because the latter relies on momentum, which is not suitable when we are
+using pre-trained weights. SGD is more appropriate for fine-tuning the
+model after the initial embeddings have been loaded, as it allows for
+more stable updates without relying on momentum.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+This approach of combining GMF and MLP in the NeuMF framework, along
+with the pre-training strategy, allows the model to benefit from both
+the simplicity and interpretability of GMF’s linear interactions and the
+flexibility of MLP’s non-linear learning. By fusing the strengths of
+both models and leveraging pre-trained embeddings, the NeuMF model can
+better capture complex relationships between users and items, leading to
+more accurate predictions in recommendation systems.
+</p>
+<br> <strong style="font-size: 12pt;">Model Training</strong> <br> <br>
+<center>
+<figure>
+<img src="Images/NEUF.jpg" width="400">
+<figcaption style="font-size: 12px; line-height: 11pt text-align: center;">
+<br>Figure 3: Neuf model
+</figcaption>
+</figure>
+</center>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NeuMFModel(torch.nn.Module):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, uid_count, animeid_count, genre_count, latent_dim_len, hidden):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(NeuMFModel, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        device <span class="op">=</span> torch.device(<span class="st">&quot;cuda&quot;</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">&quot;cpu&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_count <span class="op">=</span> uid_count</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_count <span class="op">=</span> animeid_count</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.genre_count <span class="op">=</span> genre_count  <span class="co"># Number of one-hot encoded genres</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.latent_dim_len <span class="op">=</span> latent_dim_len</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.hidden_layer <span class="op">=</span> hidden</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Embedding layers for user and anime</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding_gmf <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.uid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding_gmf <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.animeid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding_mlp <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.uid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding_mlp <span class="op">=</span> nn.Embedding(num_embeddings<span class="op">=</span><span class="va">self</span>.animeid_count, embedding_dim<span class="op">=</span><span class="va">self</span>.latent_dim_len)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Define the layers of the MLP</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.layers <span class="op">=</span> nn.ModuleList()</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Combine user, item, and non-embedding features</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        input_dim <span class="op">=</span> <span class="va">self</span>.latent_dim_len <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.genre_count</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dim <span class="kw">in</span> <span class="va">self</span>.hidden_layer:</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.Linear(in_features<span class="op">=</span>input_dim, out_features<span class="op">=</span>dim))</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.ReLU())</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.layers.append(nn.Dropout(<span class="fl">0.3</span>))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>            input_dim <span class="op">=</span> dim</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Output layer</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.output_layer <span class="op">=</span> nn.Sequential(</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            nn.Linear(in_features<span class="op">=</span><span class="va">self</span>.hidden_layer[<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> <span class="va">self</span>.latent_dim_len, out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            nn.Sigmoid()) </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Initialize weights</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">apply</span>(<span class="va">self</span>.init_weights)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, uid_index, animeid_index, episodes, <span class="bu">type</span>, genre):</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get user and item embeddings</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        uid_mlp <span class="op">=</span> <span class="va">self</span>.uid_embedding_mlp(uid_index)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        animeid_mlp <span class="op">=</span> <span class="va">self</span>.animeid_embedding_mlp(animeid_index)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        uid_gmf <span class="op">=</span> <span class="va">self</span>.uid_embedding_gmf(uid_index)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        animeid_gmf <span class="op">=</span> <span class="va">self</span>.animeid_embedding_gmf(animeid_index)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        episodes <span class="op">=</span> episodes.unsqueeze(<span class="dv">1</span>)  <span class="co"># (batch_size, 1)</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">type</span> <span class="op">=</span> <span class="bu">type</span>.unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Concatenate all features into one vector</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        model_input <span class="op">=</span> torch.cat([uid_mlp, animeid_mlp, episodes, <span class="bu">type</span>, genre], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        product <span class="op">=</span> torch.mul(uid_gmf, animeid_gmf)</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass input through hidden layers</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> hidden_layer <span class="kw">in</span> <span class="va">self</span>.layers:</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>            model_input <span class="op">=</span> hidden_layer(model_input)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>            product <span class="op">=</span> torch.nn.ReLU()(product)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute final output score (prediction)</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        vector <span class="op">=</span> torch.cat([model_input, product], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        score <span class="op">=</span> <span class="va">self</span>.output_layer(vector)</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> score.squeeze()</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> init_weights(<span class="va">self</span>, m):</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Linear):</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>            nn.init.xavier_normal_(m.weight)</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> m.bias <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>                nn.init.zeros_(m.bias)</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Embedding):</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>            nn.init.normal_(m.weight, mean<span class="op">=</span><span class="fl">0.0</span>, std<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pretrain_loader(<span class="va">self</span>):</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>        mlp_model <span class="op">=</span> MLPModel(uid_count<span class="op">=</span>uid_count,</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>                         animeid_count<span class="op">=</span>animeid_count,</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>                         genre_count<span class="op">=</span>genre_count,</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>                         latent_dim_len<span class="op">=</span>latent_dim_len,</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>                         hidden<span class="op">=</span>hidden_layers)</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>        gmf_model <span class="op">=</span> GMFModel(uid_count<span class="op">=</span>uid_count,</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>                         animeid_count<span class="op">=</span>animeid_count,</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>                         genre_count<span class="op">=</span>genre_count,</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>                         latent_dim_len<span class="op">=</span>latent_dim_len)</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Move models to GPU</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>        mlp_model.cuda()</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>        gmf_model.cuda()</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Load the weights from pre-trained models</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>        mlp_model.load_state_dict(torch.load(<span class="st">&#39;models/mlp_model.pth&#39;</span>))</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        gmf_model.load_state_dict(torch.load(<span class="st">&#39;models/gmf_model.pth&#39;</span>))</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Load the embedding layers from the MLP and GMF models into NeuMF</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding_mlp.weight.data <span class="op">=</span> mlp_model.uid_embedding.weight.data</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding_mlp.weight.data <span class="op">=</span> mlp_model.animeid_embedding.weight.data</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.uid_embedding_gmf.weight.data <span class="op">=</span> gmf_model.uid_embedding.weight.data</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.animeid_embedding_gmf.weight.data <span class="op">=</span> gmf_model.animeid_embedding.weight.data</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Load the MLP hidden layers&#39; weights into the NeuMF model</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="va">self</span>.layers)):</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(<span class="va">self</span>.layers[i], nn.Linear):</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Only load weights for Linear layers</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.layers[i].weight.data <span class="op">=</span> mlp_model.layers[i].weight.data</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.layers[i].bias.data <span class="op">=</span> mlp_model.layers[i].bias.data</span></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+This Python code defines the <code>AnimeData</code> class for preparing
+and processing anime and user rating data using the
+<code>scikit-learn</code>, <code>pandas</code>, and <code>torch</code>
+libraries. The <code>__init__</code> method initializes the class with
+the input datasets, encodes categorical data using
+<code>LabelEncoder</code> and <code>MultiLabelBinarizer</code>, and
+merges user ratings with anime information. The processed data includes
+one-hot encoded genres and numerical mappings for IDs, names, and types.
+The <code>process</code> method encodes the input features, while
+<code>__len__</code> and <code>__getitem__</code> provide data access
+and indexing. The <code>get_loaders</code> method splits the dataset
+into training and test sets, converts them into PyTorch tensors, and
+organizes them into <code>DataLoader</code> objects for batch processing
+during model training and evaluation.
+</p>
+<p><br> <strong style="font-size: 12pt;">Minimal CPU-Ready Working
+Example</strong> <br></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder, MultiLabelBinarizer</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader, TensorDataset</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AnimeData(<span class="bu">object</span>):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ratings, anime):</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ratings <span class="op">=</span> ratings</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime <span class="op">=</span> anime</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        encoder <span class="op">=</span> LabelEncoder()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove data where user did not rate anime</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ratings <span class="op">=</span> <span class="va">self</span>.ratings.loc[<span class="va">self</span>.ratings.iloc[:, <span class="dv">2</span>] <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove overall members and rating -&gt; not needed</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime.drop([<span class="st">&#39;members&#39;</span>, <span class="st">&#39;rating&#39;</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># anime_id,name,genre,type,episodes,rating,members</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># user_id,anime_id,rating</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encode the IDs to an integer mapping for embedding</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ratings[<span class="st">&#39;user_id&#39;</span>] <span class="op">=</span> <span class="va">self</span>.ratings[<span class="st">&#39;user_id&#39;</span>].astype(<span class="st">&quot;category&quot;</span>).cat.codes</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ratings[<span class="st">&#39;anime_id&#39;</span>] <span class="op">=</span> <span class="va">self</span>.ratings[<span class="st">&#39;anime_id&#39;</span>].astype(<span class="st">&quot;category&quot;</span>).cat.codes</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime[<span class="st">&#39;anime_id&#39;</span>] <span class="op">=</span> <span class="va">self</span>.anime[<span class="st">&#39;anime_id&#39;</span>].astype(<span class="st">&quot;category&quot;</span>).cat.codes</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime <span class="op">=</span> <span class="va">self</span>.anime[<span class="va">self</span>.anime[<span class="st">&#39;episodes&#39;</span>] <span class="op">!=</span> <span class="st">&#39;Unknown&#39;</span>]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encode the name and type</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime[<span class="st">&#39;name&#39;</span>] <span class="op">=</span> encoder.fit_transform(<span class="va">self</span>.anime[<span class="st">&#39;name&#39;</span>])</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name_map <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(encoder.classes_, encoder.transform(encoder.classes_)))</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime[<span class="st">&#39;type&#39;</span>] <span class="op">=</span> encoder.fit_transform(<span class="va">self</span>.anime[<span class="st">&#39;type&#39;</span>])</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.type_map <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(encoder.classes_, encoder.transform(encoder.classes_)))</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># One hot encode the genres</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime[<span class="st">&#39;genre&#39;</span>] <span class="op">=</span> <span class="va">self</span>.anime[<span class="st">&#39;genre&#39;</span>].<span class="bu">str</span>.split(<span class="st">&#39;, &#39;</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="bu">bin</span> <span class="op">=</span> MultiLabelBinarizer()</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        onehot <span class="op">=</span> <span class="bu">bin</span>.fit_transform(<span class="va">self</span>.anime[<span class="st">&#39;genre&#39;</span>])</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        dfs <span class="op">=</span> pd.DataFrame(onehot, columns<span class="op">=</span><span class="bu">bin</span>.classes_)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime.drop(<span class="st">&#39;genre&#39;</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        dfs.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.genre <span class="op">=</span> dfs</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.anime <span class="op">=</span> pd.concat([<span class="va">self</span>.anime, dfs], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Merge user and anime data into single dataset</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.data <span class="op">=</span> <span class="va">self</span>.ratings.merge(<span class="va">self</span>.anime, on<span class="op">=</span><span class="st">&#39;anime_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;left&#39;</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.data[<span class="st">&#39;rating&#39;</span>] <span class="op">=</span> <span class="va">self</span>.data[<span class="st">&#39;rating&#39;</span>] <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.data[<span class="st">&#39;episodes&#39;</span>] <span class="op">=</span> <span class="va">self</span>.data[<span class="st">&#39;episodes&#39;</span>].astype(<span class="st">&#39;int64&#39;</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.features <span class="op">=</span> <span class="va">self</span>.data[[<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;anime_id&#39;</span>, <span class="st">&#39;type&#39;</span>, <span class="st">&#39;episodes&#39;</span>]<span class="op">+</span> <span class="bu">list</span>(<span class="va">self</span>.genre.columns)]</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.target <span class="op">=</span> <span class="va">self</span>.data[<span class="st">&#39;rating&#39;</span>]</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.genre_cols <span class="op">=</span> <span class="va">self</span>.features.columns[<span class="dv">5</span>:]</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> process(<span class="va">self</span>, item):</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encode the type and name</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>        tid <span class="op">=</span> <span class="va">self</span>.type_map[item[<span class="dv">2</span>]]  <span class="co"># &quot;TV&quot; -&gt; Encoded type using `type_map`</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>        <span class="co">#name = self.name_map[item[3]]  # Anime name -&gt; Encoded name using `name_map`, unused</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>        <span class="co"># One-hot encode the genres</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>        genre_encoded <span class="op">=</span> [<span class="dv">1</span> <span class="cf">if</span> genre <span class="kw">in</span> item[<span class="dv">5</span>].split(<span class="st">&quot;, &quot;</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> genre <span class="kw">in</span> <span class="va">self</span>.genre_cols]</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Combine all the features into a single list</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>        dfn <span class="op">=</span> [item[<span class="dv">0</span>],  <span class="co"># anime_id</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>               item[<span class="dv">1</span>],  <span class="co"># user_id</span></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>               tid,      <span class="co"># Encoded type</span></span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>               item[<span class="dv">4</span>]]  <span class="co"># episodes</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        dfn <span class="op">+=</span> genre_encoded  <span class="co"># Append the genre encoding</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Return as a Pandas Series (1D array)</span></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>        cols <span class="op">=</span> [<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;anime_id&#39;</span>, <span class="st">&#39;type&#39;</span>, <span class="st">&#39;episodes&#39;</span>] <span class="op">+</span> <span class="bu">list</span>(<span class="va">self</span>.genre.columns)</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.Series(dfn, index<span class="op">=</span>cols)</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.features)</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, item):</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.features[item]</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="va">self</span>.target[item]</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.transform:</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="va">self</span>.transform(x)</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x, y</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_loaders(<span class="va">self</span>):</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>        train, test <span class="op">=</span> train_test_split(<span class="va">self</span>.data, test_size<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>        train_user_item <span class="op">=</span> torch.tensor(train[<span class="va">self</span>.features.columns].values, dtype<span class="op">=</span>torch.<span class="bu">long</span>)</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>        train_labels <span class="op">=</span> torch.tensor(train[<span class="st">&#39;rating&#39;</span>].values, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>        test_user_item <span class="op">=</span> torch.tensor(test[<span class="va">self</span>.features.columns].values, dtype<span class="op">=</span>torch.<span class="bu">long</span>)</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>        test_labels <span class="op">=</span> torch.tensor(test[<span class="st">&#39;rating&#39;</span>].values, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>        train_set <span class="op">=</span> TensorDataset(train_user_item[:, <span class="dv">0</span>], <span class="co"># user_id</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>                                  train_user_item[:, <span class="dv">1</span>], <span class="co"># anime_id</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>                                  train_user_item[:, <span class="dv">2</span>], <span class="co"># type</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>                                  train_user_item[:, <span class="dv">3</span>], <span class="co"># episodes</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>                                  train_user_item[:, <span class="dv">4</span>:], <span class="co"># genres</span></span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>                                  train_labels)</span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>        test_set <span class="op">=</span> TensorDataset(test_user_item[:, <span class="dv">0</span>], <span class="co"># user_id</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>                                  test_user_item[:, <span class="dv">1</span>], <span class="co"># anime_id</span></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>                                  test_user_item[:, <span class="dv">2</span>], <span class="co"># type</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>                                  test_user_item[:, <span class="dv">3</span>], <span class="co"># episodes</span></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>                                  test_user_item[:, <span class="dv">4</span>:], <span class="co"># genres</span></span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>                                  test_labels)</span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>        train <span class="op">=</span> DataLoader(train_set, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>        test <span class="op">=</span> DataLoader(test_set, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> train, test</span></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+The code implements a recommendation system for anime using
+collaborative filtering and neural network models in PyTorch, featuring
+three model architectures: MLP (Multilayer Perceptron), GMF (Generalized
+Matrix Factorization), and NeuMF (Neural Matrix Factorization). The
+system begins by loading and cleaning data from two CSV files
+(<code>anime.csv</code> for anime metadata and <code>rating.csv</code>
+for user ratings), removing missing values and irrelevant entries. This
+processed data is then used to train the models. The MLP model is a
+neural network that learns latent factors through hidden layers, the GMF
+model uses matrix factorization to focus on collaborative filtering, and
+the NeuMF model combines both MLP and GMF to leverage the strengths of
+both approaches. Each model is initialized with key parameters such as
+user and item counts and latent dimensions. The training process uses
+the Adam optimizer with MSE loss, running for multiple epochs. During
+training, evaluation metrics like MAE, RMSE, and <span
+class="math inline">\(R^2\)</span> are calculated to track performance
+on both training and test sets. Device handling ensures that if a GPU is
+available, it is used to speed up computations.
+</p>
+<p style="font-size: 10pt; line-height: 11pt;">
+The output shows that the MLP model demonstrates gradual improvement,
+but its test loss fluctuates slightly, indicating room for better
+generalization. Its evaluation metrics <span class="math inline">\((MAE
+= 0.1104, RMSE = 0.1386, R^2 = 0.2205)\)</span> suggest the model is
+still underperforming. The GMF model improves on the MLP, with better
+evaluation metrics <span class="math inline">\((MAE = 0.0909, RMSE =
+0.1201, R^2 = 0.4143)\)</span>, indicating it captures user-item
+interactions more effectively. The NeuMF model, a hybrid of MLP and GMF,
+outperforms both, with the best evaluation results <span
+class="math inline">\((MAE = 0.0870, RMSE = 0.1151, R^2 =
+0.4624)\)</span>, demonstrating the power of combining neural networks
+with matrix factorization. Insights from the results show that while the
+training loss decreases steadily, the fluctuating test loss suggests
+potential overfitting, pointing to the need for further regularization
+and tuning. The improvement in <span class="math inline">\(R^2\)</span>
+across models, especially with NeuMF, underscores the value of hybrid
+approaches in capturing complex user-item relationships. To optimize
+performance, hyperparameter tuning, regularization techniques like
+dropout, and using more advanced methods like cross-validation or
+embedding layers could further enhance the system. In conclusion, the
+code successfully trains and evaluates three recommendation models, with
+the NeuMF model performing the best, offering a promising foundation for
+further optimization and refinement.
+</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#from mlp import MLPModel</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#from gmf import GMFModel</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">&quot;cuda&quot;</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">&quot;cpu&quot;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Using device: </span><span class="sc">{</span>device<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">&#39;data/anime.csv&#39;</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">&#39;data/rating.csv&#39;</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> df2[:<span class="dv">1000000</span>]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>df1.dropna(inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>df2.dropna(inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> df2.loc[df2.iloc[:, <span class="dv">2</span>] <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> df1[df1[<span class="st">&#39;episodes&#39;</span>] <span class="op">!=</span> <span class="st">&#39;Unknown&#39;</span>]</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>handler <span class="op">=</span> AnimeData(df2, df1)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>uid_count <span class="op">=</span> <span class="bu">len</span>(handler.ratings[<span class="st">&#39;user_id&#39;</span>].unique())  <span class="co"># Number of unique users</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>animeid_count <span class="op">=</span> <span class="bu">len</span>(handler.anime[<span class="st">&#39;anime_id&#39;</span>].unique())  <span class="co"># Number of unique anime</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>genre_count <span class="op">=</span> <span class="dv">43</span>  <span class="co"># Number of one-hot encoded genre categories</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>latent_dim_len <span class="op">=</span> <span class="dv">50</span>  <span class="co"># Latent dimension length for embeddings</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>hidden_layers <span class="op">=</span> [<span class="dv">128</span>, <span class="dv">64</span>, <span class="dv">32</span>, <span class="dv">16</span>]  <span class="co"># Example hidden layers for MLP</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the MLP model</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>mlp_model <span class="op">=</span> MLPModel(uid_count<span class="op">=</span>uid_count,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                 animeid_count<span class="op">=</span>animeid_count,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                 genre_count<span class="op">=</span>genre_count,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                 latent_dim_len<span class="op">=</span>latent_dim_len,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                 hidden<span class="op">=</span>hidden_layers)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>gmf_model <span class="op">=</span> GMFModel(uid_count<span class="op">=</span>uid_count,</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                 animeid_count<span class="op">=</span>animeid_count,</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                 genre_count<span class="op">=</span>genre_count,</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                 latent_dim_len<span class="op">=</span>latent_dim_len)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>neumf_model <span class="op">=</span> NeuMFModel(uid_count<span class="op">=</span>uid_count,</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>                 animeid_count<span class="op">=</span>animeid_count,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                 genre_count<span class="op">=</span>genre_count,</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>                 latent_dim_len<span class="op">=</span>latent_dim_len,</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>                 hidden<span class="op">=</span>hidden_layers)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>gmf_model.to(device)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>mlp_model.to(device)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>neumf_model.to(device)</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> handler.get_loaders()</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>loss_function <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>gmfo <span class="op">=</span> torch.optim.Adam(gmf_model.parameters(), lr<span class="op">=</span><span class="fl">0.0001</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>mlpo <span class="op">=</span> torch.optim.Adam(mlp_model.parameters(), lr<span class="op">=</span><span class="fl">0.0001</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>nfmo <span class="op">=</span> torch.optim.SGD(neumf_model.parameters(), lr<span class="op">=</span><span class="fl">0.0001</span>, momentum<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_and_eval(a, b, model, opt, lr<span class="op">=</span><span class="fl">0.001</span>, epochs<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> opt</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    loss_function <span class="op">=</span> nn .MSELoss()</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    model.train()</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        model.train()</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        total_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> user, anime, <span class="bu">type</span>,episodes, genre, labels <span class="kw">in</span> a:</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>            user, anime <span class="op">=</span> user.to(device), anime.to(device)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>            episodes, <span class="bu">type</span>, genre <span class="op">=</span> episodes.to(device), <span class="bu">type</span>.to(device), genre.to(device)</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>            labels <span class="op">=</span> labels.to(device)</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>            optimizer.zero_grad()</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>            pred <span class="op">=</span> model(user, anime, episodes, <span class="bu">type</span>, genre)</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> loss_function(pred, labels)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>            loss.backward()</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>            optimizer.step()</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>            total_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Epoch [</span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="dv">10</span><span class="sc">}</span><span class="ss">], Loss: </span><span class="sc">{</span>total_loss <span class="op">/</span> <span class="bu">len</span>(a)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>        model.<span class="bu">eval</span>()  <span class="co"># Set the model to evaluation mode</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>        total_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        total_samples <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        all_predictions <span class="op">=</span> []</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>        all_labels <span class="op">=</span> []</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():  <span class="co"># Disable gradient calculation</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> user, anime, <span class="bu">type</span>, episodes, genre, labels <span class="kw">in</span> b:</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>                user, anime <span class="op">=</span> user.to(device), anime.to(device)</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>                episodes, <span class="bu">type</span>, genre <span class="op">=</span> episodes.to(device), <span class="bu">type</span>.to(device), genre.to(device)</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>                labels <span class="op">=</span> labels.to(device)</span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Get model predictions</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>                pred <span class="op">=</span> model(user, anime, episodes, <span class="bu">type</span>, genre)</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Calculate the loss (e.g., MSE loss)</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> loss_function(pred, labels)</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>                total_loss <span class="op">+=</span> loss.item() <span class="op">*</span> <span class="bu">len</span>(labels)  <span class="co"># Accumulate loss</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>                total_samples <span class="op">+=</span> <span class="bu">len</span>(labels)  <span class="co"># Accumulate the number of samples</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Store predictions and actual values</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>                all_predictions.extend(pred.cpu().numpy())</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>                all_labels.extend(labels.cpu().numpy())</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate average loss</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>        avg_loss <span class="op">=</span> total_loss <span class="op">/</span> total_samples</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Test Loss [</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/10]: </span><span class="sc">{</span>avg_loss<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Additional Metrics</span></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error, r2_score</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>    mae <span class="op">=</span> mean_absolute_error(all_labels, all_predictions)</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>    mse <span class="op">=</span> mean_squared_error(all_labels, all_predictions)</span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>    rmse <span class="op">=</span> mse <span class="op">**</span> <span class="fl">0.5</span></span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>    r2 <span class="op">=</span> r2_score(all_labels, all_predictions)</span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Test MAE: </span><span class="sc">{</span>mae<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Test RMSE: </span><span class="sc">{</span>rmse<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;$R^2$ Score: </span><span class="sc">{</span>r2<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>run_and_eval(a, b, mlp_model, mlpo, lr<span class="op">=</span><span class="fl">0.0001</span>, epochs<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="co">#torch.save(mlp_model.state_dict(), &#39;mlp_model.pth&#39;)</span></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>run_and_eval(a, b, gmf_model, gmfo, lr<span class="op">=</span><span class="fl">0.0001</span>, epochs<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="co">#torch.save(gmf_model.state_dict(), &#39;gmf_model.pth&#39;)</span></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>neumf_model.pretrain_loader()</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>run_and_eval(a, b, neumf_model, nfmo, lr<span class="op">=</span><span class="fl">0.0001</span>, epochs<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>torch.save(neumf_model.state_dict(), <span class="st">&#39;neumf_model.pth&#39;</span>)</span></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+<strong>Results:</strong>
+</p>
+<pre><code>Using device: cuda
+Epoch [1/10], Loss: 3.6950174334295
+Test Loss [1/10]: 0.157952371776796
+Epoch [2/10], Loss: 0.11668900996973773
+Test Loss [2/10]: 0.03814665263147855
+Epoch [3/10], Loss: 0.040147326586463444
+Test Loss [3/10]: 0.022276981720272128
+Epoch [4/10], Loss: 0.022898902423949267
+Test Loss [4/10]: 0.0206319713626718
+Epoch [5/10], Loss: 0.019955833869365353
+Test Loss [5/10]: 0.020516480288159767
+Epoch [6/10], Loss: 0.018866505908579186
+Test Loss [6/10]: 0.020635879038299828
+Epoch [7/10], Loss: 0.01828422652079384
+Test Loss [7/10]: 0.02011084193172132
+Epoch [8/10], Loss: 0.017863553787622624
+Test Loss [8/10]: 0.019992064000603074
+Epoch [9/10], Loss: 0.0176579500614437
+Test Loss [9/10]: 0.020253627192886033
+Epoch [10/10], Loss: 0.017454158246397105
+Test Loss [10/10]: 0.019198449493947483
+Test MAE: 0.1104
+Test RMSE: 0.1386
+$R^2$ Score: 0.2205
+
+Epoch [1/10], Loss: 0.04003728575764353
+Test Loss [1/10]: 0.028299097051615502
+Epoch [2/10], Loss: 0.025533486508182983
+Test Loss [2/10]: 0.022891827709723422
+Epoch [3/10], Loss: 0.021175410911702965
+Test Loss [3/10]: 0.019831051891316644
+Epoch [4/10], Loss: 0.018362480420187267
+Test Loss [4/10]: 0.017628081791847532
+Epoch [5/10], Loss: 0.016429371527416643
+Test Loss [5/10]: 0.01631068073150627
+Epoch [6/10], Loss: 0.015305056382203475
+Test Loss [6/10]: 0.015574246103732257
+Epoch [7/10], Loss: 0.01463160192022472
+Test Loss [7/10]: 0.015128253192493068
+Epoch [8/10], Loss: 0.014160454717286095
+Test Loss [8/10]: 0.014841098104719667
+Epoch [9/10], Loss: 0.013809964230738773
+Test Loss [9/10]: 0.014603769124104361
+Epoch [10/10], Loss: 0.013505750678043297
+Test Loss [10/10]: 0.014424409991700846
+Test MAE: 0.0909
+Test RMSE: 0.1201
+$R^2$ Score: 0.4143
+Epoch [1/10], Loss: 0.027678686989260452
+Test Loss [1/10]: 0.014772928314505123
+Epoch [2/10], Loss: 0.01634571377412012
+Test Loss [2/10]: 0.014307665699783177
+Epoch [3/10], Loss: 0.014723368335014456
+Test Loss [3/10]: 0.01403033738548863
+Epoch [4/10], Loss: 0.01394584908455086
+Test Loss [4/10]: 0.013758254560114869
+Epoch [5/10], Loss: 0.01346005102425137
+Test Loss [5/10]: 0.013632847206995794
+Epoch [6/10], Loss: 0.013093187849867632
+Test Loss [6/10]: 0.013532563343907766
+Epoch [7/10], Loss: 0.012803735120885321
+Test Loss [7/10]: 0.013445049989493694
+Epoch [8/10], Loss: 0.01252872828114485
+Test Loss [8/10]: 0.013395482611195579
+Epoch [9/10], Loss: 0.012248591937687769
+Test Loss [9/10]: 0.013305518026749452
+Epoch [10/10], Loss: 0.011973678431735057
+Test Loss [10/10]: 0.013241319170093422
+Test MAE: 0.0870
+Test RMSE: 0.1151
+$R^2$ Score: 0.4624</code></pre>
+<p style="font-size: 10pt; line-height: 11pt;">
+This code uses Matplotlib to plot the training and test losses over 10
+epochs for three different models: MLP, GMF, and NeuMF. It initializes
+lists for the training and test losses of each model, then creates
+separate plots for each model, showing how losses change across epochs.
+Blue markers represent training loss while red markers indicate test
+loss. Each plot is labeled with the respective model name, and axes are
+labeled for clarity. These plots help visualize and compare the
+performance and convergence of the models, highlighting how well each
+one learns and generalizes over time. This detailed analysis aids in
+understanding the training progress and the effectiveness of each model
+in reducing loss.
+</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MLP model data</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mlp_train_loss <span class="op">=</span> [<span class="fl">3.6950174334295</span>, <span class="fl">0.11668900996973773</span>, <span class="fl">0.040147326586463444</span>, <span class="fl">0.022898902423949267</span>, <span class="fl">0.019955833869365353</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.018866505908579186</span>, <span class="fl">0.01828422652079384</span>, <span class="fl">0.017863553787622624</span>, <span class="fl">0.0176579500614437</span>, <span class="fl">0.017454158246397105</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>mlp_test_loss <span class="op">=</span> [<span class="fl">0.157952371776796</span>, <span class="fl">0.03814665263147855</span>, <span class="fl">0.022276981720272128</span>, <span class="fl">0.0206319713626718</span>, <span class="fl">0.020516480288159767</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">0.020635879038299828</span>, <span class="fl">0.02011084193172132</span>, <span class="fl">0.019992064000603074</span>, <span class="fl">0.020253627192886033</span>, <span class="fl">0.019198449493947483</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># GMF model data</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>gmf_train_loss <span class="op">=</span> [<span class="fl">0.04003728575764353</span>, <span class="fl">0.025533486508182983</span>, <span class="fl">0.021175410911702965</span>, <span class="fl">0.018362480420187267</span>, <span class="fl">0.016429371527416643</span>, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.015305056382203475</span>, <span class="fl">0.01463160192022472</span>, <span class="fl">0.014160454717286095</span>, <span class="fl">0.013809964230738773</span>, <span class="fl">0.013505750678043297</span>]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>gmf_test_loss <span class="op">=</span> [<span class="fl">0.028299097051615502</span>, <span class="fl">0.022891827709723422</span>, <span class="fl">0.019831051891316644</span>, <span class="fl">0.017628081791847532</span>, <span class="fl">0.01631068073150627</span>, </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                 <span class="fl">0.015574246103732257</span>, <span class="fl">0.015128253192493068</span>, <span class="fl">0.014841098104719667</span>, <span class="fl">0.014603769124104361</span>, <span class="fl">0.014424409991700846</span>]</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># NeuMF model data</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>neumf_train_loss <span class="op">=</span> [<span class="fl">0.027678686989260452</span>, <span class="fl">0.01634571377412012</span>, <span class="fl">0.014723368335014456</span>, <span class="fl">0.01394584908455086</span>, <span class="fl">0.01346005102425137</span>, </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                    <span class="fl">0.013093187849867632</span>, <span class="fl">0.012803735120885321</span>, <span class="fl">0.01252872828114485</span>, <span class="fl">0.012248591937687769</span>, <span class="fl">0.011973678431735057</span>]</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>neumf_test_loss <span class="op">=</span> [<span class="fl">0.014772928314505123</span>, <span class="fl">0.014307665699783177</span>, <span class="fl">0.01403033738548863</span>, <span class="fl">0.013758254560114869</span>, <span class="fl">0.013632847206995794</span>, </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.013532563343907766</span>, <span class="fl">0.013445049989493694</span>, <span class="fl">0.013395482611195579</span>, <span class="fl">0.013305518026749452</span>, <span class="fl">0.013241319170093422</span>]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the losses</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co"># MLP model loss</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), mlp_train_loss, label<span class="op">=</span><span class="st">&quot;Train Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), mlp_test_loss, label<span class="op">=</span><span class="st">&quot;Test Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;MLP Model Loss&quot;</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Epoch&quot;</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Loss&quot;</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co"># GMF model loss</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), gmf_train_loss, label<span class="op">=</span><span class="st">&quot;Train Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), gmf_test_loss, label<span class="op">=</span><span class="st">&quot;Test Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;GMF Model Loss&quot;</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Epoch&quot;</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Loss&quot;</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co"># NeuMF model loss</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), neumf_train_loss, label<span class="op">=</span><span class="st">&quot;Train Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>), neumf_test_loss, label<span class="op">=</span><span class="st">&quot;Test Loss&quot;</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&quot;NeuMF Model Loss&quot;</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Epoch&quot;</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Loss&quot;</span>)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p style="font-size: 10pt; line-height: 11pt;">
+<strong>Results:</strong>
+</p>
+<center>
+<figure>
+<img src="Images/output1.png" width="400">
+</figure>
+</center>
+<center>
+<figure>
+<img src="Images/output2.png" width="400">
+</figure>
+</center>
+<center>
+<figure>
+<img src="Images/output3.png" width="400">
+</figure>
+</center>
+<p style="font-size: 10pt; line-height: 11pt;">
+The results for three models—MLP, GMF, and NeuMF—are presented over 10
+epochs, showcasing their training, testing, and performance metrics. The
+MLP Model shows significant learning, with training loss decreasing from
+3.6950 in the first epoch to 0.0175 in the tenth epoch. However, its
+test loss fluctuates slightly, starting at 0.1580 and ending at 0.0192.
+Its performance metrics are moderate, with a Test Mean Absolute Error
+(MAE) of 0.1104, Test Root Mean Squared Error (RMSE) of 0.1386, and an
+<span class="math inline">\(R^2\)</span> Score of 0.2205. The GMF Model,
+which uses Generalized Matrix Factorization, demonstrates more effective
+convergence, with training loss decreasing from 0.0400 to 0.0135 by the
+tenth epoch. Its test loss improves from 0.0283 to 0.0144. Performance
+metrics for GMF show a Test MAE of 0.0909, Test RMSE of 0.1201, and an
+<span class="math inline">\(R^2\)</span> Score of 0.4143, indicating
+better performance than the MLP Model. The NeuMF Model, based on Neural
+Matrix Factorization, outperforms the other two models. Its training
+loss decreases from 0.0277 to 0.0120, while test loss decreases slightly
+from 0.0148 to 0.0132. NeuMF’s performance metrics include the lowest
+Test MAE (0.0870), Test RMSE (0.1151), and the highest <span
+class="math inline">\(R^2\)</span> Score (0.4624), indicating the best
+overall performance. In summary, while the MLP Model shows significant
+learning, it exhibits moderate performance. The GMF Model demonstrates
+better performance with effective convergence and lower test loss than
+the MLP. However, the NeuMF Model achieves the best results, with the
+lowest test loss, MAE, RMSE, and the highest <span
+class="math inline">\(R^2\)</span> Score, making it the most effective
+in capturing user-item interactions among the three models.
 </p>
 <br> <strong style="font-size: 12pt;">Discussion</strong> <br> <br>
 <p style="font-size: 10pt; line-height: 11pt;">
@@ -137,12 +1071,6 @@ lablabalb alabl aba lbala blabalab
 <p style="font-size: 10pt; line-height: 11pt;">
 [2] Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization
 techniques for recommender systems. <i>Computer</i>, 42(8), 30-37.
-</p>
-<br> <strong style="font-size: 12pt;">Appendix</strong> <br> <br>
-<p style="font-size: 10pt; line-height: 11pt;">
-Optionally include supplemental material (complete proofs additional
-experiments and plots) in appendix. All such materials <strong>SHOULD be
-included in the main submission.<strong>
 </p>
 </body>
 </html>

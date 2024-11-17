@@ -3,6 +3,14 @@ body {
     background-color: white;
 }
 
+code {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #217dc4;
+}
+
 .math {
     font-size: 12px;
     margin: 1em 0;
