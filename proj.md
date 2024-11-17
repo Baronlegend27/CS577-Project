@@ -16,8 +16,7 @@
     <strong style="font-size: 12pt;">Abstract</strong>
 </center>
 <p style="text-align: justify; margin-left: 3pc; margin-right: 3pc; font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, 
-    with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified. blalablabc labalbalablaba  lbalabalba lablabalbalabalablaba lbalbalabl abalbal abalbalablabalbalabl abalbalablabalab
+    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified. bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab
 </p>
 <br>
 <strong style="font-size: 12pt;">Background</strong>
@@ -27,10 +26,10 @@
     Collaborative filtering is a method used in recommendation systems to suggest items to users based on the preferences and behaviors of other users. Basically assuming that if User $A$ liked something and User $B$ has similar taste to User $A$ then User $B$ will also like something User $A$ liked. 
 </p>
 <p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
-    Matrix factorization models are used to discover latent features that explain the patterns in user-item interactions. We basically have a matrix R where rows (m) represent the users and the columns (n) represent the items. We then want to factorize R into two smaller matrices (P) an $m * k$ where each row represents a user and the column represents a latent feature. For the item matrix $Q n * k$ where each row represents an item and each column represents a latent feature of the item. Then the factorization attempts to approximate the matrix R from $P * Q^T$. The latent factors or hidden features are the things which get learned that explain the observed interaction between users and items. 
+    Matrix factorization models are used to discover latent features that explain the patterns in user-item interactions. We basically have a matrix $R$ where rows $(m)$ represent the users and the columns $(n)$ represent the items. We then want to factorize $R$ into two smaller matrices $(P)$ an $m * k$ where each row represents a user and the column represents a latent feature. For the item matrix $Q n * k$ where each row represents an item and each column represents a latent feature of the item. Then the factorization attempts to approximate the matrix $R$ from $P * Q^T$. The latent factors or hidden features are the things which get learned that explain the observed interaction between users and items. 
 </p>
 <p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
-    Once the latent features are learned the dot product is used to predict (rank) the rating of between the users and items. WHere the interaction between a user and an item can be estimated by measuring how well the latent feature vectors for that user and that item match or align with each other (the dot product). When there is a high dot product it means that the latent features for a user and an item align well, while a low dot product means that the vectors do not align. 
+    Once the latent features are learned the dot product is used to predict (rank) the rating of between the users and items. Where the interaction between a user and an item can be estimated by measuring how well the latent feature vectors for that user and that item match or align with each other (the dot product). When there is a high dot product it means that the latent features for a user and an item align well, while a low dot product means that the vectors do not align. 
 </p>
 <p style="text-align: justify; font-size: 10pt; line-height: 11pt;">
     However using the dot product does have some drawbacks. The dot product assumes that the user-item interactions are linearly dependent on the latent features. If two items are similar, the dot product assumes that the user’s preference for both items is simply the sum of their preferences for the individual latent features. The dot product assumes that user preferences can be captured by a single, linear combination of item attributes (represented by the item’s latent feature vector).
@@ -40,31 +39,28 @@
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified.
+    bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab
 </p>
 <br>
 <strong style="font-size: 12pt;">Minimal CPU-Ready Working Example</strong>
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, 
-    with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified.
+    bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalabbla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab
 </p>
 <br>
 <strong style="font-size: 12pt;">Discussion</strong>
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, 
-    with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified.
+    bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab
 </p>
 <br>
 <strong style="font-size: 12pt;">Contribution</strong>
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch on both sides, 
-    with a vertical spacing of 11 points (leading). It is also in 10-point type, as specified.
+    bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab
 </p>
 <br>
 <strong style="font-size: 12pt;">References</strong>
