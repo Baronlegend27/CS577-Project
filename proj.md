@@ -108,12 +108,6 @@
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    Any choice of citation style is acceptable as long as you are 
-    consistent It is permissible to reduce the font size to small 
-    (9 point) when listing the references.Note that the Reference section 
-    does not count towards the page limit.
-</p>
-<p style="font-size: 10pt; line-height: 11pt;">
     [1] He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T. S. 
     (2017, April). Neural collaborative filtering. In <i>Proceedings of 
     the 26th international conference on world wide web</i> (pp. 173-182).
