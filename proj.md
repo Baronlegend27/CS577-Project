@@ -16,9 +16,7 @@
     <strong style="font-size: 12pt;">Abstract</strong>
 </center>
 <p style="text-align: justify; margin-left: 3pc; margin-right: 3pc; font-size: 10pt; line-height: 11pt;">
-    Your abstract text goes here. This paragraph will be indented 1/2 inch 
-    on both sides, with a vertical spacing of 11 points (leading). It is 
-    also in 10-point type, as specified.
+    In this paper, we are looking at how neural networks can be used in collaborative filtering to improve recommendation systems. The current standard for models used in recommendation systems with collaborative filtering uses the inner product to associate users and items but these models are linear. Using a neural network would make the model non-linear. To show that it would improve the recommendation system, we compare the inner product model with the neural network model and by the end of this paper, we will show that using a neural network is better then the inner dot product.
 </p>
 <br>
 <strong style="font-size: 12pt;">Background</strong>
@@ -729,21 +727,14 @@ plt.show()
     <img src="Images/output3.png" width="400">
 </figure></center>
 <p style="font-size: 10pt; line-height: 11pt;">
-    The results for three models—MLP, GMF, and NeuMF—are presented over 10 epochs, showcasing their training, testing, and performance metrics. The MLP Model shows significant learning, with training loss decreasing from 3.6950 in the first epoch to 0.0175 in the tenth epoch. However, its test loss fluctuates slightly, starting at 0.1580 and ending at 0.0192. Its performance metrics are moderate, with a Test Mean Absolute Error (MAE) of 0.1104, Test Root Mean Squared Error (RMSE) of 0.1386, and an $R^2$ Score of 0.2205. The GMF Model, which uses Generalized Matrix Factorization, demonstrates more effective convergence, with training loss decreasing from 0.0400 to 0.0135 by the tenth epoch. Its test loss improves from 0.0283 to 0.0144. Performance metrics for GMF show a Test MAE of 0.0909, Test RMSE of 0.1201, and an $R^2$ Score of 0.4143, indicating better performance than the MLP Model. The NeuMF Model, based on Neural Matrix Factorization, outperforms the other two models. Its training loss decreases from 0.0277 to 0.0120, while test loss decreases slightly from 0.0148 to 0.0132. NeuMF’s performance metrics include the lowest Test MAE (0.0870), Test RMSE (0.1151), and the highest $R^2$ Score (0.4624), indicating the best overall performance. In summary, while the MLP Model shows significant learning, it exhibits moderate performance. The GMF Model demonstrates better performance with effective convergence and lower test loss than the MLP. However, the NeuMF Model achieves the best results, with the lowest test loss, MAE, RMSE, and the highest $R^2$ Score, making it the most effective in capturing user-item interactions among the three models.
+    The results for three models —MLP, GMF, and NeuMF— are presented over 10 epochs, showcasing their training, testing, and performance metrics. The MLP Model shows significant learning, with training loss decreasing from 3.6950 in the first epoch to 0.0175 in the tenth epoch. However, its test loss fluctuates slightly, starting at 0.1580 and ending at 0.0192. Its performance metrics are moderate, with a Test Mean Absolute Error (MAE) of 0.1104, Test Root Mean Squared Error (RMSE) of 0.1386, and an $R^2$ Score of 0.2205. The GMF Model, which uses Generalized Matrix Factorization, demonstrates more effective convergence, with training loss decreasing from 0.0400 to 0.0135 by the tenth epoch. Its test loss improves from 0.0283 to 0.0144. Performance metrics for GMF show a Test MAE of 0.0909, Test RMSE of 0.1201, and an $R^2$ Score of 0.4143, indicating better performance than the MLP Model. The NeuMF Model, based on Neural Matrix Factorization, outperforms the other two models. Its training loss decreases from 0.0277 to 0.0120, while test loss decreases slightly from 0.0148 to 0.0132. NeuMF’s performance metrics include the lowest Test MAE (0.0870), Test RMSE (0.1151), and the highest $R^2$ Score (0.4624), indicating the best overall performance. In summary, while the MLP Model shows significant learning, it exhibits moderate performance. The GMF Model demonstrates better performance with effective convergence and lower test loss than the MLP. However, the NeuMF Model achieves the best results, with the lowest test loss, MAE, RMSE, and the highest $R^2$ Score, making it the most effective in capturing user-item interactions among the three models.
 </p>
 <br>
 <strong style="font-size: 12pt;">Discussion</strong>
 <br>
 <br>
 <p style="font-size: 10pt; line-height: 11pt;">
-    bla lablabc labal balab laba  lbala balba labl abalbala balab laba 
-    lbalb alabl abalbal abalba lablabalb alabl aba lbala blabalab bla 
-    lablabc labal balab laba  lbala balba labl abalbala balab laba lbalb 
-    alabl abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc 
-    labal balab laba  lbala balba labl abalbala balab laba lbalb alabl 
-    abalbal abalba lablabalb alabl aba lbala blabalab bla lablabc labal 
-    balab laba  lbala balba labl abalbala balab laba lbalb alabl abalbal 
-    abalba lablabalb alabl aba lbala blabalab
+    The three models in this paper —MLP, GMF, and NeuMF— compared to the basic matrix factorization (that uses inner dot product) have better accuracy but these models are still simple and limited in scope. These models can be expanded upon by making it able to handle auxillary data such as current trends, personal reviews, and others. It could also improve accuracy further when compined with current matrix factorization models.
 </p>
 <br>
 <strong style="font-size: 12pt;">References</strong>
